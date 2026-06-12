@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { loadSlim } from "@tsparticles/slim";
 
 const START_DATE = new Date(2021, 7, 14, 0, 0, 0);
 
@@ -56,7 +55,6 @@ function getDiff() {
 
 export default function App() {
   const [time, setTime] = useState(getDiff());
-  const [particlesReady, setParticlesReady] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,58 +65,10 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
-  const particlesInit = useCallback(async (engine) => {
-    try {
-      await loadSlim(engine);
-    } catch (e) {
-      // ignore
-    }
-  }, []);
-
-  const particlesLoaded = useCallback(async (container) => {
-    try {
-      console.log("tsparticles loaded =>", !!container);
-      setParticlesReady(true);
-    } catch (e) {
-      // ignore
-    }
-  }, []);
-
-  const heartSvg = `
-    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
-      <path fill='%23ff5a87' d='M12 21s-7.072-4.872-9.192-7.04C-0.6 10.632 1.6 6 6 6c2.2 0 3.6 1.2 4 2 .4-.8 1.8-2 4-2 4.4 0 6.6 4.632 3.192 7.96C19.072 16.128 12 21 12 21z'/>
-    </svg>`;
-  const heartDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(heartSvg)}`;
-
-  const particlesOptions = {
-    // keep canvas above the content so decorative hearts are visible;
-    // pointer-events is disabled in CSS so clicks pass through
-    fullScreen: { enable: true, zIndex: 20 },
-    particles: {
-      number: { value: 100, density: { enable: false } },
-      color: { value: ["#ff6b8a", "#ff3b7a", "#ff9bb3", "#ffffff"] },
-      shape: {
-        type: "image",
-        image: [{ src: heartDataUrl, width: 48, height: 48 }]
-      },
-      opacity: { value: 0.95, random: { enable: true, minimumValue: 0.45 }, animation: { enable: false } },
-      size: { value: { min: 18, max: 64 }, random: { enable: true, minimumValue: 14 }, animation: { enable: false } },
-      move: {
-        enable: true,
-        direction: "bottom",
-        speed: { min: 0.8, max: 2.6 },
-        outModes: { default: "out" },
-        straight: false,
-        random: false
-      },
-      rotate: { value: { min: 0, max: 360 }, direction: "random", animation: { enable: true, speed: 20 } }
-    },
-    detectRetina: true
-  };
 
   return (
     <>
-      <Particles id="hearts" init={particlesInit} options={particlesOptions} loaded={particlesLoaded} />
+    
       <div className="app-shell" style={{ position: "relative", zIndex: 1 }}>
         <div className="container">
           <h1>Para nós 💗</h1>
