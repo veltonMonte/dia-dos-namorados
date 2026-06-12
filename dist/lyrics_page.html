@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Letras — Apresentação</title>
+    <style>
+      body{ margin:0; font-family: Inter, system-ui, -apple-system, Arial; background: #071026; color:#fff; display:flex; align-items:center; justify-content:center; height:100vh }
+      .slide{ width:100%; max-width:880px; padding:36px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); text-align:center; box-shadow: 0 20px 60px rgba(0,0,0,0.6) }
+      .line{ font-size:28px; font-weight:600; margin:10px 0; color:#fff }
+      .small{ font-size:16px; color:#b8c7db; margin-top:18px }
+      .controls{ position:fixed; right:20px; top:20px; display:flex; gap:8px }
+      .controls button{ background:rgba(255,255,255,0.06); color:#fff; border:1px solid rgba(255,255,255,0.04); padding:8px 10px; border-radius:8px; cursor:pointer }
+    </style>
+  </head>
+  <body>
+    <div class="slide" id="slide">
+      <div id="line" class="line">Carregando...</div>
+      <div id="sub" class="small">Acompanhe a letra — avance automaticamente</div>
+    </div>
+    <div class="controls">
+      <button id="pause">Pausar</button>
+      <button id="close">Fechar</button>
+    </div>
+    <script>
+      let lines = []
+      let idx = 0
+      let interval = null
+      const delay = 4000
+
+      function show(i){
+        const el = document.getElementById('line')
+        if(!lines[i]) { el.textContent = '' ; return }
+        el.textContent = lines[i]
+      }
+
+      function start(){
+        clearInterval(interval)
+        interval = setInterval(()=>{
+          idx++
+          if(idx >= lines.length) { clearInterval(interval); return }
+          show(idx)
+        }, delay)
+      }
+
+      document.getElementById('pause').addEventListener('click', ()=>{
+        if(interval){ clearInterval(interval); interval = null; document.getElementById('pause').textContent = 'Retomar' }
+        else { start(); document.getElementById('pause').textContent = 'Pausar' }
+      })
+      document.getElementById('close').addEventListener('click', ()=> window.close())
+
+      fetch('/lyrics/always_full.json').then(r=>r.json()).then(j=>{
+        lines = j.lines || []
+        // start at first line
+        idx = 0
+        show(idx)
+        start()
+      }).catch(e=>{
+        document.getElementById('line').textContent = 'Não foi possível carregar as letras.'
+      })
+    </script>
+  </body>
+</html>
