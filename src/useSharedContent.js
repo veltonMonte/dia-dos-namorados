@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
 const CODE_KEY = 'para-nos:codigo:v1'
+export const DEFAULT_ACCESS_CODE = '1408'
 const LEGACY_MEMORIES_KEY = 'para-nos:memorias:v1'
 const LEGACY_PHRASES_KEY = 'para-nos:frases:v1'
 
 function savedCode() {
-  try { return sessionStorage.getItem(CODE_KEY) || '' } catch { return '' }
+  try { return sessionStorage.getItem(CODE_KEY) || DEFAULT_ACCESS_CODE } catch { return DEFAULT_ACCESS_CODE }
 }
 
 function readLegacy() {

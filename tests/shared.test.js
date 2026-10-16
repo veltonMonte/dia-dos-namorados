@@ -1,6 +1,19 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { changeData } from '../api/shared.js'
+import { authorized, changeData, getAccessCode } from '../api/shared.js'
+
+test('chave de acesso padrão é 1408 quando não definida no ambiente', () => {
+  const previous = process.env.DATA_ACCESS_CODE
+  delete process.env.DATA_ACCESS_CODE
+  try {
+    assert.equal(getAccessCode(), '1408')
+    assert.equal(authorized({ headers: { authorization: 'Bearer 1408' } }), true)
+    assert.equal(authorized({ headers: { authorization: 'Bearer 9999' } }), false)
+    assert.equal(authorized({ headers: {} }), false)
+  } finally {
+    if (previous !== undefined) process.env.DATA_ACCESS_CODE = previous
+  }
+})
 
 test('memórias e frases compartilham o mesmo documento sem apagar umas às outras', () => {
   const empty = { memories: [], phrases: [] }

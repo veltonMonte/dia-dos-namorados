@@ -65,15 +65,15 @@ function PhotoGallery() {
 }
 
 function SharedAccess({ shared }) {
-  const [draft, setDraft] = useState('')
+  const [draft, setDraft] = useState('1408')
   if (shared.ready) return <div className="shared-status wrap"><span>Memórias e frases compartilhadas nos dois celulares.</span>{shared.legacyCount > 0 && <button type="button" disabled={shared.busy} onClick={shared.importLegacy}>Importar {shared.legacyCount} item(ns) deste navegador</button>}<button type="button" onClick={() => shared.refresh()}>Atualizar ↻</button></div>
   return <section className="section shared-access wrap" aria-labelledby="shared-title">
     <span className="eyebrow">Espaço compartilhado</span>
     <h2 id="shared-title">Entrar para ver nossas memórias</h2>
     <p>Use o mesmo código de acesso nos dois celulares. Tudo o que um adicionar aparecerá para o outro.</p>
-    <form onSubmit={async event => { event.preventDefault(); if (await shared.unlock(draft)) setDraft('') }}>
+    <form onSubmit={async event => { event.preventDefault(); if (await shared.unlock(draft)) setDraft('1408') }}>
       <label htmlFor="shared-code">Código de acesso</label>
-      <input id="shared-code" type="password" autoComplete="current-password" required value={draft} onChange={event => setDraft(event.target.value)} />
+      <input id="shared-code" type="password" autoComplete="current-password" placeholder="1408" required value={draft} onChange={event => setDraft(event.target.value)} />
       <button className="button button-primary" type="submit" disabled={shared.loading}>{shared.loading ? 'Entrando...' : 'Entrar'}</button>
     </form>
     {shared.error && <p className="notice" role="alert">{shared.error}</p>}
