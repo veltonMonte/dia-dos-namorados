@@ -93,7 +93,7 @@ function isConflict(error) {
 
 export default async function handler(request, response) {
   if (!['GET', 'POST'].includes(request.method)) return reply(response, 405, { error: 'Método não permitido.' })
-  if (!process.env.DATA_ACCESS_CODE || !process.env.BLOB_READ_WRITE_TOKEN) {
+  if (!process.env.DATA_ACCESS_CODE || !(process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN)) {
     return reply(response, 503, { error: 'O compartilhamento ainda não foi configurado na Vercel.' })
   }
   if (!authorized(request)) return reply(response, 401, { error: 'Código de acesso incorreto.' })

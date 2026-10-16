@@ -14,7 +14,7 @@ O projeto inclui `vercel.json` para manter a rota `/lyrics` acessível após atu
 
 ## Configurar o compartilhamento na Vercel
 
-1. No projeto da Vercel, abra **Storage → Create Database → Blob** e crie uma store **Private** vinculada ao projeto. A Vercel adicionará `BLOB_READ_WRITE_TOKEN` às variáveis do projeto.
+1. No projeto da Vercel, abra **Storage → Create Database → Blob** e crie uma store **Private** vinculada ao projeto. A Vercel adicionará `BLOB_STORE_ID` para autenticação OIDC ou `BLOB_READ_WRITE_TOKEN` às variáveis do projeto.
 2. Em **Settings → Environment Variables**, crie `DATA_ACCESS_CODE` com um código longo que só vocês dois conheçam. Não use uma variável `VITE_`, pois ela seria exposta no navegador.
 3. Faça um novo deploy. Nos dois celulares, abram o site e digitem o mesmo código.
 
